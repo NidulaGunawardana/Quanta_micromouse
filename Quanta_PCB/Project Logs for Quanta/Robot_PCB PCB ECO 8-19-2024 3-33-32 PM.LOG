@@ -1,0 +1,11 @@
+Added Pin To Net: NetName=AGND Pin=J4-3
+Added Pin To Net: NetName=AGND Pin=J5-3
+Added Pin To Net: NetName=AGND Pin=J6-3
+Added Pin To Net: NetName=AGND Pin=J7-3
+Added Room: Name=LED
+Added Room: Name=LM
+Added Room: Name=MC
+Added Room: Name=POW
+Added Room: Name=RM
+Added Room: Name=Robot
+Added Room: Name=SE

@@ -1,0 +1,13 @@
+Added Pin To Net: NetName=A3.3V Pin=C15-2
+Added Pin To Net: NetName=A3.3V Pin=C16-2
+Added Pin To Net: NetName=A3.3V Pin=C18-2
+Added Pin To Net: NetName=A3.3V Pin=IC1-1
+Added Pin To Net: NetName=A3.3V Pin=IC1-15
+Added Pin To Net: NetName=A3.3V Pin=IC1-16
+Added Room: Name=LED
+Added Room: Name=LM
+Added Room: Name=MC
+Added Room: Name=POW
+Added Room: Name=RM
+Added Room: Name=Robot
+Added Room: Name=SE

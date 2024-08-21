@@ -1,0 +1,11 @@
+Added Pin To Net: NetName=A3.3V Pin=J4-1
+Added Pin To Net: NetName=A3.3V Pin=J5-1
+Added Pin To Net: NetName=A3.3V Pin=J6-1
+Added Pin To Net: NetName=A3.3V Pin=J7-1
+Added Room: Name=LED
+Added Room: Name=LM
+Added Room: Name=MC
+Added Room: Name=POW
+Added Room: Name=RM
+Added Room: Name=Robot
+Added Room: Name=SE
