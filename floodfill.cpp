@@ -20,3 +20,8 @@ using namespace std;
 
 // define the maze size
 #define MAX 100
+
+// define the maze size
+#define INF 1000000
+
+// define the maze size
