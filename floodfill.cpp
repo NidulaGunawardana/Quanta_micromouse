@@ -17,3 +17,6 @@ using namespace std;
 
 // define the maze size
 #define COL 16
+
+// define the maze size
+#define MAX 100
