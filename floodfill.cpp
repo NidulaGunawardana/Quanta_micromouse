@@ -1,27 +1,20 @@
-// floodfill algorithm for micromouse for 16x16 maze
-
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <algorithm>
-#include <cmath>
-#include <stack>
-#include <fstream>
-#include <string>
-#include <sstream>
+#include<iostream>
+#include<string>
+#include<queue>
+#include<climits>
 
 using namespace std;
 
-// define the maze size
-#define ROW 16
+struct floodfill
+{
+    int value;
+    bool northwall;
+    bool southwall;
+    bool eastwall;
+    bool westwall;
+};
 
-// define the maze size
-#define COL 16
-
-// define the maze size
-#define MAX 100
-
-// define the maze size
-#define INF 1000000
-
-// define the maze size
+int main(){
+    
+    return 0;
+}
