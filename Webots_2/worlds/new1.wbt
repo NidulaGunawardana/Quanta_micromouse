@@ -1,0 +1,19 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/WorldMaze.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 1 0 0 1.57
+  position 4.096987268989736 -1.3459444404572438 8.211016227143606
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+WorldMaze {
+  floorSize 3 3
+}
