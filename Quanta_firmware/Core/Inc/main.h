@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include <stdbool.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -122,7 +123,22 @@ void Error_Handler(void);
 #define RPWMB_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+extern SPI_HandleTypeDef hspi1;
 
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim5;
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim9;
+extern TIM_HandleTypeDef htim13;
+extern TIM_HandleTypeDef htim14;
+
+extern ADC_HandleTypeDef hadc1;
+
+extern int mouseState;
+
+extern bool LF, RF, LD, RD;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
