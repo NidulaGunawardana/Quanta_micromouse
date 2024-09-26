@@ -1,4 +1,0 @@
-../libs/src/motor_speed.c:15:6:init	16	static
-../libs/src/motor_speed.c:21:6:speed_set	16	static
-../libs/src/motor_speed.c:39:5:get_encoder_reading	16	static
-../libs/src/motor_speed.c:44:7:encoder_speed	40	static
