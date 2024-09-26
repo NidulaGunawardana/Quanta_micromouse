@@ -833,6 +833,8 @@ int main() {
 	XY_prev.x = 0;
 	XY_prev.y = 0;
 	int orient = 0;
+    int runState = 1;
+    int mouseState = 1;
 
 
     // int x = 0;
@@ -842,51 +844,85 @@ int main() {
     // int orient = 0;
 
     while (true) {
-        
-		getSensorReadings();
-		
-        updateWalls(XY, orient, L, R, F);
-		colorWalls();
+
+        switch (mouseState)
+        {
+        case 1:
+
+            if (runState == 0) { 
+                // Starting from the (0,0) position and go to the first cell
+
+            } else if (runState == 1) { 
+                // Decision taking whether to run forward floodfill or backward
+                getSensorReadings();
+                updateWalls(XY, orient, L, R, F);
+                colorWalls();
+            
+                if (flood[XY.y][XY.x] != 0) { //not at the center
+                    floodFill(XY, XY_prev);
+                } else { //at the center
+                    while (true) {
+                        // Infinite loop to halt the process --- backflood here
+                    }
+                }                       
+
+                runState = 3;
+
+            } else if (runState == 2) { 
+                // Moving to the center of the cell in front
+                // Logging and moving forward
+                log("moveForward");
+                showFlood(XY);
+                API::moveForward();
+
+                runState = 4;
+
+            } else if (runState == 3) { 
+
+                // Call the function to determine the next move
+                char direction = toMove(XY, XY_prev, orient);
+
+                // Turning
+                if (direction == 'L') {
+                    API::turnLeft();
+                    orient = API::orientation(orient, 'L');
+                } else if (direction == 'R') {
+                    API::turnRight();
+                    orient = API::orientation(orient, 'R');
+                } else if (direction == 'B') {
+                    API::turnLeft();
+                    orient = API::orientation(orient, 'L');
+                    API::turnLeft();
+                    orient = API::orientation(orient, 'L');
+                }          
+
+                runState = 2;
 
 
-	
-        if (flood[XY.y][XY.x] != 0) {
-            floodFill(XY, XY_prev);
-        } else {
-            while (true) {
-                // Infinite loop to halt the process
+            } else if (runState == 4) { 
+                // Move to edge and updating the coordinates
+
+                // Update previous coordinates and the current ones
+                XY_prev = XY;
+                std::pair<int, int> newCoordinates = API::updateCoordinates(XY.x, XY.y, orient);
+                XY.x = newCoordinates.first;
+                XY.y = newCoordinates.second;
+
+                runState = 1;
+
+
+            } else if (runState == 5) { 
+                // Front alignment
+
             }
+
+            break;
+
         }
 
+        
 
-
-        // Call the function to determine the next move
-        char direction = toMove(XY, XY_prev, orient);
-
-        if (direction == 'L') {
-            API::turnLeft();
-            orient = API::orientation(orient, 'L');
-        } else if (direction == 'R') {
-            API::turnRight();
-            orient = API::orientation(orient, 'R');
-        } else if (direction == 'B') {
-            API::turnLeft();
-            orient = API::orientation(orient, 'L');
-            API::turnLeft();
-            orient = API::orientation(orient, 'L');
-        }
-
-        // Logging and moving forward
-        log("moveForward");
-        showFlood(XY);
-        API::moveForward();
-
-        // Update previous coordinates and the current ones
-        XY_prev = XY;
-        std::pair<int, int> newCoordinates = API::updateCoordinates(XY.x, XY.y, orient);
-        XY.x = newCoordinates.first;
-        XY.y = newCoordinates.second;
-    }
+}
 
     return 0;
 }
