@@ -241,6 +241,8 @@ bool isAccessible(struct coordinate p, struct coordinate p1) {
 	}
 }
 
+
+
 struct surroundCoor getSurrounds(struct coordinate p) {
 	struct surroundCoor surCoor;
 	surCoor.N.x = p.x;

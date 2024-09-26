@@ -31,13 +31,15 @@ gyro = robot.getDevice("gyro")  # Use the name of the Gyroscope node in Webots
 gyro.enable(TIME_STEP)
 
 # Get the proximity sensors
+ps = []
+
 sensors = [
     robot.getDevice('ps0'),  # Front left
     robot.getDevice('ps1'),  # Front center
-    robot.getDevice('ps2'),  # Front right
-    robot.getDevice('ps3'),  # Right side
-    robot.getDevice('ps4'),  # Back right
-    robot.getDevice('ps5'),  # Back center
+    # robot.getDevice('ps2'),  # Front right
+    # robot.getDevice('ps3'),  # Right side
+    # robot.getDevice('ps4'),  # Back right
+    # robot.getDevice('ps5'),  # Back center
     robot.getDevice('ps6'),  # Back left
     robot.getDevice('ps7'),  # Left side
 ]
@@ -45,6 +47,11 @@ sensors = [
 # Enable the proximity sensors
 for sensor in sensors:
     sensor.enable(TIME_STEP)
+    ps.append(sensor)
+    
+def get_distance():
+   sensor_values = [sensor.getValue() for sensor in ps]
+   print(sensor_values)
 
 def moveDistance(target_distance):
      # Reset encoders
@@ -68,7 +75,7 @@ def moveDistance(target_distance):
         if abs(left_wheel_distance) >= target_distance or abs(right_wheel_distance) >= target_distance:
             break
             
-        print(f"Left Wheel Distance: {left_wheel_distance} | Right Wheel Distance: {right_wheel_distance}")
+        # print(f"Left Wheel Distance: {left_wheel_distance} | Right Wheel Distance: {right_wheel_distance}")
 
     # Stop the motors
     left_motor.setVelocity(0)
@@ -103,25 +110,43 @@ def turnAngle(target_angle):
         if abs(left_wheel_travel_angle) >= abs(target_angle) or abs(right_wheel_travel_angle) >= abs(target_angle):
             break
             
-        print(f"Left Wheel Angle: {left_wheel_travel_angle} | Right Wheel Angle: {right_wheel_travel_angle}")
+        # print(f"Left Wheel Angle: {left_wheel_travel_angle} | Right Wheel Angle: {right_wheel_travel_angle}")
 
     # Stop the motors
     left_motor.setVelocity(0)
     right_motor.setVelocity(0)
+
+def wall():
+    dist0 = ps[0].getValue()
+    dist1 = ps[7].getValue()
     
+    dist2 = ps[1].getValue()
+    dist3 = ps[6].getValue()
+    
+    if(dist0 < 70) and (dist1 <70) :
+        F = True
+     
+    
+    print(dist0)
+    print(dist1)  
+
 # Main loop
 while robot.step(TIME_STEP) != -1:
 
-
+    get_distance()
     moveDistance(72)
     turnAngle(1.57)
+    get_distance()
     moveDistance(18)
-    turnAngle(-1.57)
-    moveDistance(18)
-    turnAngle(-1.57)
-    moveDistance(18)
-    turnAngle(1.57)
+    # moveDistance(18)
+    # turnAngle(-1.57)
+    # moveDistance(18)
+    # turnAngle(-1.57)
+    # moveDistance(18)
+    # turnAngle(1.57)
     # break
+    
+   
     
     # Get the gyroscope values (angular velocity in rad/s for X, Y, Z)
     # gyro_values = gyro.getValues()

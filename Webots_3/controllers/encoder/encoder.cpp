@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
   Motor *right_motor = robot->getMotor("right wheel motor");
   
   // Enable position feedback from the motors (encoders)
-  left_motor->enable(TIME_STEP);
-  right_motor->enable(TIME_STEP);
+  left_motor->enablePosition(TIME_STEP);
+  right_motor->enablePosition(TIME_STEP);
   
   // Set motor velocity to make the robot move
   left_motor->setVelocity(1.0);
