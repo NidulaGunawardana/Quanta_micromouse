@@ -743,6 +743,78 @@ void showFlood(struct coordinate p) {
     }
 }
 
+void colorWalls(){
+	if (cells[XY.y][XY.x] == 14) {
+			API::setWall(XY.x, XY.y, 'n');
+			API::setWall(XY.x, XY.y, 's');
+			API::setWall(XY.x, XY.y, 'w');
+		}
+		else if (cells[XY.y][XY.x] == 13)
+		{
+			API::setWall(XY.x, XY.y, 'n');
+			API::setWall(XY.x, XY.y, 'e');
+			API::setWall(XY.x, XY.y, 'w');
+		}
+		else if (cells[XY.y][XY.x] == 12)
+		{
+			API::setWall(XY.x, XY.y, 'n');
+			API::setWall(XY.x, XY.y, 's');
+			API::setWall(XY.x, XY.y, 'e');
+		}
+		else if (cells[XY.y][XY.x] == 11)
+		{
+			API::setWall(XY.x, XY.y, 'w');
+			API::setWall(XY.x, XY.y, 's');
+			API::setWall(XY.x, XY.y, 'e');
+		}
+		else if (cells[XY.y][XY.x] == 10)
+		{
+			API::setWall(XY.x, XY.y, 'n');
+			API::setWall(XY.x, XY.y, 's');
+		}
+		else if (cells[XY.y][XY.x] == 9)
+		{
+			API::setWall(XY.x, XY.y, 'e');
+			API::setWall(XY.x, XY.y, 'w');
+		}
+		else if (cells[XY.y][XY.x] == 8)
+		{
+			API::setWall(XY.x, XY.y, 'n');
+			API::setWall(XY.x, XY.y, 'w');
+		}
+		else if (cells[XY.y][XY.x] == 7)
+		{
+			API::setWall(XY.x, XY.y, 'n');
+			API::setWall(XY.x, XY.y, 'e');
+		}
+		else if (cells[XY.y][XY.x] == 6)
+		{
+			API::setWall(XY.x, XY.y, 'e');
+			API::setWall(XY.x, XY.y, 's');
+		}
+		else if (cells[XY.y][XY.x] == 5)
+		{
+			API::setWall(XY.x, XY.y, 'w');
+			API::setWall(XY.x, XY.y, 's');
+		}
+		else if (cells[XY.y][XY.x] == 4)
+		{
+			API::setWall(XY.x, XY.y, 's');
+		}
+		else if (cells[XY.y][XY.x] == 3)
+		{
+			API::setWall(XY.x, XY.y, 'e');
+		}
+		else if (cells[XY.y][XY.x] == 2)
+		{
+			API::setWall(XY.x, XY.y, 'n');
+		}
+		else if (cells[XY.y][XY.x] == 1)
+		{
+			API::setWall(XY.x, XY.y, 'w');
+		}
+}
+
 
 int main() {
 
@@ -766,7 +838,10 @@ int main() {
 
 		
         updateWalls(XY, orient, L, R, F);
+		colorWalls();
 
+
+	
         if (flood[XY.y][XY.x] != 0) {
             floodFill(XY, XY_prev);
         } else {
@@ -776,18 +851,6 @@ int main() {
         }
 
 
-		// if (API::wallLeft())
-		// {
-		// 	API::setWall(XY.x, XY.y, 'w');
-		// }
-		// if (API::wallRight())
-		// {
-		// 	API::setWall(XY.x, XY.y, 'e');
-		// }
-		// if (API::wallFront())
-		// {
-		// 	API::setWall(XY.x, XY.y, 'n');
-		// }
 
         // Call the function to determine the next move
         char direction = toMove(XY, XY_prev, orient);
