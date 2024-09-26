@@ -1,0 +1,4 @@
+../Libs/Src/L3GD20.c:25:6:gyroInit	8	static
+../Libs/Src/L3GD20.c:67:5:gyroUpdate	8	static
+../Libs/Src/L3GD20.c:78:9:readGyro	16	static
+../Libs/Src/L3GD20.c:98:6:gyroCalibration	2032	static
