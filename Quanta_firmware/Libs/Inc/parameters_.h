@@ -27,4 +27,6 @@
 /////////////////////////////////Buzzer.h /////////////////////////////////
 #define BUZZ_LOUDNESS_ .2
 
+#include "main.h"
+
 #endif /* PARAMETERS__H_ */
