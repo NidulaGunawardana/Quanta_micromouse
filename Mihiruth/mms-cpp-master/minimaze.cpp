@@ -3,8 +3,8 @@
 #include "API.h"
 #include <queue>
 
-const int ROWS = 16;
-const int COLUMNS = 16;
+const int ROWS = 8;
+const int COLUMNS = 8;
 
 // int ptr = 0;
 // int backPtr = 0;
@@ -49,63 +49,40 @@ void log(const std::string& text) {
 }
 
 int flood[ROWS][COLUMNS]={
-    {14,13,12,11,10,9,8,7,7,8,9,10,11,12,13,14},
-    {13,12,11,10,9,8,7,6,6,7,8,9,10,11,12,13},
-    {12,11,10,9,8,7,6,5,5,6,7,8,9,10,11,12},
-    {11,10,9,8,7,6,5,4,4,5,6,7,8,9,10,11},
-    {10,9,8,7,6,5,4,3,3,4,5,6,7,8,9,10},
-    {9,8,7,6,5,4,3,2,2,3,4,5,6,7,8,9},
-    {8,7,6,5,4,3,2,1,1,2,3,4,5,6,7,8},
-    {7,6,5,4,3,2,1,0,0,1,2,3,4,5,6,7},
-    {7,6,5,4,3,2,1,0,0,1,2,3,4,5,6,7},
-    {8,7,6,5,4,3,2,1,1,2,3,4,5,6,7,8},
-    {9,8,7,6,5,4,3,2,2,3,4,5,6,7,8,9},
-    {10,9,8,7,6,5,4,3,3,4,5,6,7,8,9,10},
-    {11,10,9,8,7,6,5,4,4,5,6,7,8,9,10,11},
-    {12,11,10,9,8,7,6,5,5,6,7,8,9,10,11,12},
-    {13,12,11,10,9,8,7,6,6,7,8,9,10,11,12,13},
-    {14,13,12,11,10,9,8,7,7,8,9,10,11,12,13,14}
-};
+    {6, 5, 4, 3, 3, 4, 5, 6},
+    {5, 4, 3, 2, 2, 3, 4, 5},
+    {4, 3, 2, 1, 1, 2, 3, 4},
+    {3, 2, 1, 0, 0, 1, 2, 3},
+    {3, 2, 1, 0, 0, 1, 2, 3},
+    {4, 3, 2, 1, 1, 2, 3, 4},
+    {5, 4, 3, 2, 2, 3, 4, 5},
+    {6, 5, 4, 3, 3, 4, 5, 6}
+}
+;
 
 int cells[ROWS][COLUMNS]={
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}
-
-};
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1}
+}
+;
 
 int backFlood[ROWS][COLUMNS]={
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-		{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}
-
-};
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1},
+    {-1,-1,-1,-1,-1,-1,-1,-1}
+}
+;
 
 
 void updateWalls(struct coordinate point, int orient, bool L, bool R, bool F) {
@@ -886,7 +863,7 @@ int main() {
             } else if (runState == 2) { 
                 // Moving to the center of the cell in front
                 // Logging and moving forward
-                log("Moving to (" + std::to_string(updateCoordinates(XY, orient).x) + ", " + std::to_string(updateCoordinates(XY, orient).y) + ")");
+                log("moveForward");
                 showFlood(XY);
                 API::moveForward();
 
@@ -900,18 +877,15 @@ int main() {
                 // Turning
                 if (direction == 'L') {
                     API::turnLeft();
-					log("Turning Left");
                     orient = orientation(orient, 'L');
                 } else if (direction == 'R') {
                     API::turnRight();
-					log("Turning Right");
                     orient = orientation(orient, 'R');
                 } else if (direction == 'B') {
                     API::turnLeft();
                     orient = orientation(orient, 'L');
                     API::turnLeft();
                     orient = orientation(orient, 'L');
-					log("Turning Back");
                 }          
 
                 runState = 2;
@@ -922,7 +896,9 @@ int main() {
 
                 // Update previous coordinates and the current ones
                 XY_prev = XY;
-                XY = updateCoordinates(XY, orient);
+                std::pair<int, int> newCoordinates = API::updateCoordinates(XY.x, XY.y, orient);
+                XY.x = newCoordinates.first;
+                XY.y = newCoordinates.second;
 
                 runState = 1;
 
@@ -962,7 +938,7 @@ int main() {
 			else if (runState == 2){
 				// Moving to the center of the cell in front
                 // Logging and moving forward
-                log("Moving to (" + std::to_string(updateCoordinates(XY, orient).x) + ", " + std::to_string(updateCoordinates(XY, orient).y) + ")");
+                log("moveForward");
                 showFlood(XY);
                 API::moveForward();
 
@@ -977,18 +953,15 @@ int main() {
 				// Turning
                 if (direction == 'L') {
                     API::turnLeft();
-					log("Turning Left");
                     orient = orientation(orient, 'L');
                 } else if (direction == 'R') {
                     API::turnRight();
-					log("Turning Right");
                     orient = orientation(orient, 'R');
                 } else if (direction == 'B') {
                     API::turnLeft();
                     orient = orientation(orient, 'L');
                     API::turnLeft();
                     orient = orientation(orient, 'L');
-					log("Turning Back");
                 }
 				runState = 2;          
 			}else if (runState == 4) { 
@@ -996,7 +969,9 @@ int main() {
 
                 // Update previous coordinates and the current ones
                 XY_prev = XY;
-                XY = updateCoordinates(XY, orient);
+                std::pair<int, int> newCoordinates = API::updateCoordinates(XY.x, XY.y, orient);
+                XY.x = newCoordinates.first;
+                XY.y = newCoordinates.second;
 
                 runState = 1;
 
