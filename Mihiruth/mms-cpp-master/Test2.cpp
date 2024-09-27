@@ -865,6 +865,7 @@ int main() {
                 if (flood[XY.y][XY.x] != 0) { //not at the center
                     floodFill(XY, XY_prev);
                 } else { //at the center
+				
                     backtrack();
 
 					dumXY.x = XY.x;
@@ -899,15 +900,15 @@ int main() {
                 // Turning
                 if (direction == 'L') {
                     API::turnLeft();
-                    orient = API::orientation(orient, 'L');
+                    orient = orientation(orient, 'L');
                 } else if (direction == 'R') {
                     API::turnRight();
-                    orient = API::orientation(orient, 'R');
+                    orient = orientation(orient, 'R');
                 } else if (direction == 'B') {
                     API::turnLeft();
-                    orient = API::orientation(orient, 'L');
+                    orient = orientation(orient, 'L');
                     API::turnLeft();
-                    orient = API::orientation(orient, 'L');
+                    orient = orientation(orient, 'L');
                 }          
 
                 runState = 2;
@@ -935,7 +936,9 @@ int main() {
 		case 3:
 
 			if (runState == 0){ //Stop the robot
-
+				mouseState = 2;
+				runState = 1;
+				
 			}
 
 			else if (runState == 1){
@@ -973,15 +976,15 @@ int main() {
 				// Turning
                 if (direction == 'L') {
                     API::turnLeft();
-                    orient = API::orientation(orient, 'L');
+                    orient = orientation(orient, 'L');
                 } else if (direction == 'R') {
                     API::turnRight();
-                    orient = API::orientation(orient, 'R');
+                    orient = orientation(orient, 'R');
                 } else if (direction == 'B') {
                     API::turnLeft();
-                    orient = API::orientation(orient, 'L');
+                    orient = orientation(orient, 'L');
                     API::turnLeft();
-                    orient = API::orientation(orient, 'L');
+                    orient = orientation(orient, 'L');
                 }
 				runState = 2;          
 			}else if (runState == 4) { 
