@@ -18,6 +18,10 @@ struct coordinate{
 static coordinate XY;
 static coordinate XY_prev;
 
+static coordinate dumXY;
+static coordinate dumXY_prev;
+static int dumOrient;
+
 static int ptr;
 static int backPtr;
 static int fwdPtr;
@@ -834,7 +838,7 @@ int main() {
 	XY_prev.y = 0;
 	int orient = 0;
     int runState = 1;
-    int mouseState = 1;
+    int mouseState = 2;
 
 
     // int x = 0;
@@ -847,7 +851,7 @@ int main() {
 
         switch (mouseState)
         {
-        case 1:
+        case 2:
 
             if (runState == 0) { 
                 // Starting from the (0,0) position and go to the first cell
@@ -861,9 +865,19 @@ int main() {
                 if (flood[XY.y][XY.x] != 0) { //not at the center
                     floodFill(XY, XY_prev);
                 } else { //at the center
-                    while (true) {
-                        // Infinite loop to halt the process --- backflood here
-                    }
+                    backtrack();
+
+					dumXY.x = XY.x;
+					dumXY.y = XY.y;
+					dumXY_prev.x = XY_prev.x;
+					dumXY_prev.y = XY_prev.y;
+					dumOrient = orient;
+
+					forwardtrack(dumXY, dumXY_prev, dumOrient);
+
+					mouseState = 3;
+					runState = 1;
+					backPtr = 0;
                 }                       
 
                 runState = 3;
@@ -880,7 +894,7 @@ int main() {
             } else if (runState == 3) { 
 
                 // Call the function to determine the next move
-                char direction = toMove(XY, XY_prev, orient);
+                direction = toMove(XY, XY_prev, orient);
 
                 // Turning
                 if (direction == 'L') {
@@ -918,9 +932,78 @@ int main() {
 
             break;
 
-        }
+		case 3:
 
-        
+			if (runState == 0){ //Stop the robot
+
+			}
+
+			else if (runState == 1){
+				getSensorReadings();
+
+				if (backFlood[XY.y][XY.x] == 0) //if the robot is at the starting point
+				{
+					backPtr = 0;
+					runState = 0;
+				}
+				else // robot is not at the starting point
+				{
+					direction = back_path[backPtr];
+					backPtr += 1;
+					runState = 3;
+				}
+
+			}
+
+			else if (runState == 2){
+				// Moving to the center of the cell in front
+                // Logging and moving forward
+                log("moveForward");
+                showFlood(XY);
+                API::moveForward();
+
+				runState = 4;
+			}
+
+			else if(runState == 3){
+
+				// Call the function to determine the next move
+                direction = toMoveBack(XY, XY_prev, orient);
+
+				// Turning
+                if (direction == 'L') {
+                    API::turnLeft();
+                    orient = API::orientation(orient, 'L');
+                } else if (direction == 'R') {
+                    API::turnRight();
+                    orient = API::orientation(orient, 'R');
+                } else if (direction == 'B') {
+                    API::turnLeft();
+                    orient = API::orientation(orient, 'L');
+                    API::turnLeft();
+                    orient = API::orientation(orient, 'L');
+                }
+				runState = 2;          
+			}else if (runState == 4) { 
+                // Move to edge and updating the coordinates
+
+                // Update previous coordinates and the current ones
+                XY_prev = XY;
+                std::pair<int, int> newCoordinates = API::updateCoordinates(XY.x, XY.y, orient);
+                XY.x = newCoordinates.first;
+                XY.y = newCoordinates.second;
+
+                runState = 1;
+
+
+            } else if (runState == 5) { 
+                // Front alignment
+
+            }
+
+			break;
+
+			}    
 
 }
 
