@@ -840,7 +840,9 @@ int main() {
     int runState = 1;
     int mouseState = 2;
 
+	int runcount = 0;
 
+	
     // int x = 0;
     // int y = 0;
     // int xprev = 0;
@@ -849,9 +851,14 @@ int main() {
 
     while (true) {
 
+		// if (runcount == 2)
+		// {
+		// 	mouseState = 5;
+		// }
+
         switch (mouseState)
         {
-        case 2:
+        case 2: //Search Run Forward
 
             if (runState == 0) { 
                 // Starting from the (0,0) position and go to the first cell
@@ -934,11 +941,12 @@ int main() {
 
             break;
 
-		case 3:
+		case 3: //Search Run Backward
 
 			if (runState == 0){ //Stop the robot
 				mouseState = 2;
 				runState = 1;
+				runcount++;
 				
 			}
 
@@ -1008,9 +1016,160 @@ int main() {
 
 			break;
 
-			}    
+		case 4: //Fast Idle -- Here the state should go to the fastforward state when a button is pressed
 
-}
+			break;
 
-    return 0;
-}
+		case 5: //Fast Forward
+			
+			if (runState == 0){ //Stop the robot
+				
+				runState = 1;
+				
+			}
+
+			else if (runState == 1){
+				getSensorReadings();
+
+				
+				if (flood[XY.y][XY.x] != 0)
+				{
+					direction = fwd_path[fwdPtr];
+					fwdPtr -= 1;
+					runState = 3;
+				}
+				else //Robot is at the middle. Now should run fastbackword
+				{			
+					fwdPtr = ptr;
+					mouseState = 6;
+					runState = 1;
+					backPtr = 0;
+				}
+				
+
+			}
+
+			else if (runState == 2){
+				// Moving to the center of the cell in front
+				// Logging and moving forward
+				log("Fast Moving to (" + std::to_string(updateCoordinates(XY, orient).x) + ", " + std::to_string(updateCoordinates(XY, orient).y));
+				showFlood(XY);
+				API::moveForward();
+
+				runState = 4;
+			}
+
+			else if(runState == 3){
+
+				// Turning
+                if (direction == 'L') {
+                    API::turnLeft();
+					log("Turning Left");
+                    orient = orientation(orient, 'L');
+                } else if (direction == 'R') {
+                    API::turnRight();
+					log("Turning Right");
+                    orient = orientation(orient, 'R');
+                } else if (direction == 'B') {
+                    API::turnLeft();
+                    orient = orientation(orient, 'L');
+                    API::turnLeft();
+                    orient = orientation(orient, 'L');
+					log("Turning Back");
+                }
+				runState = 2;          
+			}else if (runState == 4) { 
+				// Move to edge and updating the coordinates
+
+				// Update previous coordinates and the current ones
+				XY_prev = XY;
+				XY = updateCoordinates(XY, orient);
+
+				runState = 1;
+
+
+			} else if (runState == 5) { 
+				// Front alignment
+
+			}
+			break;
+
+		case 6: //Fast Backward
+
+			if (runState == 0){ //Stop the robot
+				
+				
+				
+			}
+
+			else if (runState == 1){
+				getSensorReadings();
+
+				if (backFlood[XY.y][XY.x] == 0)
+				{
+					backPtr = 0;
+					runState = 0;
+				}
+				else
+				{
+					direction = back_path[backPtr];
+					backPtr += 1;
+					runState = 2;
+				}
+				
+
+			}
+
+			else if (runState == 2){
+				// Moving to the center of the cell in front
+				// Logging and moving forward
+				log("moveForward");
+				showFlood(XY);
+				API::moveForward();
+
+				runState = 4;
+			}
+
+			else if(runState == 3){
+
+				// Turning
+				if (direction == 'L') {
+					API::turnLeft();
+					orient = orientation(orient, 'L');
+				} else if (direction == 'R') {
+					API::turnRight();
+					orient = orientation(orient, 'R');
+				} else if (direction == 'B') {
+					API::turnLeft();
+					orient = orientation(orient, 'L');
+					API::turnLeft();
+					orient = orientation(orient, 'L');
+				}
+				runState = 2;          
+			}else if (runState == 4) { 
+				// Move to edge and updating the coordinates
+
+				// Update previous coordinates and the current ones
+				XY_prev = XY;
+				XY = updateCoordinates(XY, orient);
+
+				runState = 1;
+
+
+			} else if (runState == 5) { 
+				// Front alignment
+
+			}
+
+			break;
+
+
+			} 
+
+			
+
+
+	}
+
+		return 0;
+	}

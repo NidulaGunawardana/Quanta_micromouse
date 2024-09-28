@@ -983,7 +983,89 @@ int main() {
 
 			break;
 
-			}    
+		case 4: //Fast Idle -- Here the state should go to the fastforward state when a button is pressed
+
+			break;
+
+		case 5: //Fast Forward
+			
+			if (runState == 0){ //Stop the robot
+				
+				runState = 1;
+				
+			}
+
+			else if (runState == 1){
+				getSensorReadings();
+
+				if (flood[XY.y][XY.x] >= 1)
+				{
+					direction = fwd_path[fwdPtr];
+					fwdPtr -= 1;
+					runState = 2;
+				}
+				else
+				{			
+					fwdPtr = ptr;
+					mouseState = 6;
+					runState = 1;
+					backPtr = 0;
+				}
+				break;
+
+			}
+
+			else if (runState == 2){
+				// Moving to the center of the cell in front
+                // Logging and moving forward
+                log("moveForward");
+                showFlood(XY);
+                API::moveForward();
+
+				runState = 4;
+			}
+
+			else if(runState == 3){
+
+				// Call the function to determine the next move
+                direction = toMoveBack(XY, XY_prev, orient);
+
+				// Turning
+                if (direction == 'L') {
+                    API::turnLeft();
+                    orient = orientation(orient, 'L');
+                } else if (direction == 'R') {
+                    API::turnRight();
+                    orient = orientation(orient, 'R');
+                } else if (direction == 'B') {
+                    API::turnLeft();
+                    orient = orientation(orient, 'L');
+                    API::turnLeft();
+                    orient = orientation(orient, 'L');
+                }
+				runState = 2;          
+			}else if (runState == 4) { 
+                // Move to edge and updating the coordinates
+
+                // Update previous coordinates and the current ones
+                XY_prev = XY;
+                std::pair<int, int> newCoordinates = API::updateCoordinates(XY.x, XY.y, orient);
+                XY.x = newCoordinates.first;
+                XY.y = newCoordinates.second;
+
+                runState = 1;
+
+
+            } else if (runState == 5) { 
+                // Front alignment
+
+            }
+
+
+			} 
+
+		
+
 
 }
 
