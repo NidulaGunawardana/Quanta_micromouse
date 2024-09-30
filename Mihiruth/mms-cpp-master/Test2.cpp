@@ -10,6 +10,8 @@ const int COLUMNS = 16;
 // int backPtr = 0;
 // int fwdPtr;
 
+const int MAX_PATH_SIZE = ROWS * COLUMNS;  // Set a constant size for the array
+
 struct coordinate{
 	int y;
 	int x;
@@ -25,9 +27,16 @@ static int dumOrient;
 static int ptr;
 static int backPtr;
 static int fwdPtr;
-static char back_path[ROWS*COLUMNS];
-static char fwd_path[ROWS*COLUMNS];
+static char back_path[MAX_PATH_SIZE];
+static char fwd_path[MAX_PATH_SIZE];
+static char fwd_path_prev[MAX_PATH_SIZE];
 static char direction;
+
+int turnandcellcount = 0;
+int turnandcellcount_min = MAX_PATH_SIZE;
+int pointer = 0;
+int qptr = 0;
+
 
 struct surroundCoor {
 	struct coordinate N;
@@ -723,15 +732,15 @@ void forwardtrack(struct coordinate dumXY,struct coordinate dumXY_prev, int dumO
 		else{
 			direction= toMoveBack(dumXY, dumXY_prev,dumOrient);
 			back_path[ptr] = direction;
-			if (direction == 'L'){
-				fwd_path[ptr] = 'R';
-			}
-			else if (direction == 'R'){
-				fwd_path[ptr] = 'L';
-			}
-			else{
-				fwd_path[ptr] = direction;
-			}
+			// if (direction == 'L'){
+			// 	fwd_path[ptr] = 'R';
+			// }
+			// else if (direction == 'R'){
+			// 	fwd_path[ptr] = 'L';
+			// }
+			// else{
+			// 	fwd_path[ptr] = direction;
+			// }
 
 			dumOrient = orientation(dumOrient, direction);
 			dumXY_prev = dumXY;
@@ -829,8 +838,18 @@ void getSensorReadings(){
     F = API::wallFront();
 }
 
+// void appendToForwdPath(std::queue<char> &pathQueue) {
+//     while (!pathQueue.empty() && qptr < MAX_PATH_SIZE) {
+//         fwd_path[qptr] = pathQueue.front();  // Append from queue to array
+//         pathQueue.pop();  // Remove the front element of the queue
+//         qptr++;  // Increment the pointer
+//     }
+// }
+
 
 int main() {
+
+	// std::queue<char> pathQueue;
 
 	XY.x = 0;
 	XY.y = 0;
@@ -851,10 +870,12 @@ int main() {
 
     while (true) {
 
-		// if (runcount == 1)
-		// {
-		// 	mouseState = 5;
-		// }
+		if (runcount == 3)
+		{
+			mouseState = 4;
+			runState = 0;
+			runcount = 0;
+		}
 
         switch (mouseState)
         {
@@ -879,6 +900,27 @@ int main() {
 					runState = 3;
 				}
 				else { //at the center
+
+					pointer = 0;
+					
+
+					if (turnandcellcount_min>turnandcellcount){
+						turnandcellcount_min = turnandcellcount;
+						for (int i = 0; i < MAX_PATH_SIZE; i++) { // fwd_path_prev = fwd_path
+							fwd_path_prev[i] = fwd_path[i];
+					}
+
+					}
+					turnandcellcount = 0;
+
+					// Clear the array using a loop (set all elements to '\0')
+					for (int i = 0; i < MAX_PATH_SIZE; i++) {
+						fwd_path[i] = '\0';  // Null terminator clears each element
+					}			
+
+					qptr = -1;
+
+			
 					backtrack();
 					dumXY.x = XY.x;
 					dumXY.y = XY.y;
@@ -899,6 +941,14 @@ int main() {
 				showFlood(XY);
 				API::moveForward();
 
+				if (qptr >=0)
+				{
+					fwd_path[qptr] = 'F';
+				}
+				
+				qptr++;
+				turnandcellcount++;
+
 				runState = 4;
 				break;
 
@@ -908,11 +958,17 @@ int main() {
 					API::turnLeft();
 					log("Turning Left");
 					orient = orientation(orient, 'L');
+					fwd_path[qptr] = 'L';
+					turnandcellcount++;
+					qptr++;
 				}
 				else if (direction == 'R') {
 					API::turnRight();
 					log("Turning Right");
 					orient = orientation(orient, 'R');
+					fwd_path[qptr] = 'R';
+					turnandcellcount++;
+					qptr++;
 				}
 				else if (direction == 'B') {
 					API::turnLeft();
@@ -920,6 +976,14 @@ int main() {
 					API::turnLeft();
 					orient = orientation(orient, 'L');
 					log("Turning Back");
+					if (qptr>=0)
+					{
+						fwd_path[qptr] = 'B';
+					}
+					
+					
+					turnandcellcount++;
+					qptr++;
 				}
 
 				runState = 2;
@@ -945,6 +1009,7 @@ int main() {
 			case 0: //Stop the robot
 				mouseState = 2;
 				runState = 1;
+				runcount++;
 				break;
 			
 			
@@ -963,6 +1028,7 @@ int main() {
 					backPtr += 1;
 					runState = 3;
 				}
+
 				break;
 			
 			case 2:
@@ -1014,160 +1080,47 @@ int main() {
 			}
 
 			break;
-		}
+		
 
 
-		// case 4: //Fast Idle -- Here the state should go to the fastforward state when a button is pressed
+		case 4: //Fast Forward
 
-		// 	break;
+			switch (runState)
+			{
+				case 0: //turn the robot into correct orientation
+					log("Turning the robot into correct orientation");
+					API::turnLeft();
+					API::turnLeft();
+					runState = 1;
+					break;
 
-		// case 5: //Fast Forward
-			
-		// 	if (runState == 0){ //Stop the robot
-				
-		// 		runState = 1;
-				
-		// 	}
-
-		// 	else if (runState == 1){
-		// 		getSensorReadings();
-
-				
-		// 		if (flood[XY.y][XY.x] != 0)
-		// 		{
-		// 			direction = fwd_path[fwdPtr];
-		// 			fwdPtr -= 1;
-		// 			runState = 3;
-		// 		}
-		// 		else //Robot is at the middle. Now should run fastbackword
-		// 		{			
-		// 			fwdPtr = ptr;
-		// 			mouseState = 6;
-		// 			runState = 1;
-		// 			backPtr = 0;
-		// 		}
-				
-
-		// 	}
-
-		// 	else if (runState == 2){
-		// 		// Moving to the center of the cell in front
-		// 		// Logging and moving forward
-		// 		log("Fast Moving to (" + std::to_string(updateCoordinates(XY, orient).x) + ", " + std::to_string(updateCoordinates(XY, orient).y));
-		// 		showFlood(XY);
-		// 		API::moveForward();
-
-		// 		runState = 4;
-		// 	}
-
-		// 	else if(runState == 3){
-
-		// 		direction = toMoveFastForward(XY, XY_prev, orient);
-
-		// 		// Turning
-        //         if (direction == 'L') {
-        //             API::turnLeft();
-		// 			log("Turning Left");
-        //             orient = orientation(orient, 'L');
-        //         } else if (direction == 'R') {
-        //             API::turnRight();
-		// 			log("Turning Right");
-        //             orient = orientation(orient, 'R');
-        //         } else if (direction == 'B') {
-        //             API::turnLeft();
-        //             orient = orientation(orient, 'L');
-        //             API::turnLeft();
-        //             orient = orientation(orient, 'L');
-		// 			log("Turning Back");
-        //         }
-		// 		runState = 2;          
-		// 	}else if (runState == 4) { 
-		// 		// Move to edge and updating the coordinates
-
-		// 		// Update previous coordinates and the current ones
-		// 		XY_prev = XY;
-		// 		XY = updateCoordinates(XY, orient);
-
-		// 		runState = 1;
+				case 1: //start the fast forward
+					log("Going fast forward");
+					if (fwd_path_prev[pointer] == 'F') {
+						API::moveForward();
+						pointer++;
+					} else if (fwd_path_prev[pointer] == 'L') {
+						API::turnLeft();
+						pointer++;
+					} else if (fwd_path_prev[pointer] == 'R') {
+						API::turnRight();
+						pointer++;
+					} else if (fwd_path_prev[pointer] == 'B') {
+						API::turnLeft();
+						API::turnLeft();
+						pointer++;
+					}	else {
+						log("Fast forward completed");
+						mouseState = 2;
+						runState = 0;
+					}
 
 
-		// 	} else if (runState == 5) { 
-		// 		// Front alignment
-
-		// 	}
-		// 	break;
-
-		// case 6: //Fast Backward
-
-		// 	if (runState == 0){ //Stop the robot
-				
-				
-				
-		// 	}
-
-		// 	else if (runState == 1){
-		// 		getSensorReadings();
-
-		// 		if (backFlood[XY.y][XY.x] == 0)
-		// 		{
-		// 			backPtr = 0;
-		// 			runState = 0;
-		// 		}
-		// 		else
-		// 		{
-		// 			direction = back_path[backPtr];
-		// 			backPtr += 1;
-		// 			runState = 2;
-		// 		}
-				
-
-		// 	}
-
-		// 	else if (runState == 2){
-		// 		// Moving to the center of the cell in front
-		// 		// Logging and moving forward
-		// 		log("moveForward");
-		// 		showFlood(XY);
-		// 		API::moveForward();
-
-		// 		runState = 4;
-		// 	}
-
-		// 	else if(runState == 3){
-
-		// 		// Turning
-		// 		if (direction == 'L') {
-		// 			API::turnLeft();
-		// 			orient = orientation(orient, 'L');
-		// 		} else if (direction == 'R') {
-		// 			API::turnRight();
-		// 			orient = orientation(orient, 'R');
-		// 		} else if (direction == 'B') {
-		// 			API::turnLeft();
-		// 			orient = orientation(orient, 'L');
-		// 			API::turnLeft();
-		// 			orient = orientation(orient, 'L');
-		// 		}
-		// 		runState = 2;          
-		// 	}else if (runState == 4) { 
-		// 		// Move to edge and updating the coordinates
-
-		// 		// Update previous coordinates and the current ones
-		// 		XY_prev = XY;
-		// 		XY = updateCoordinates(XY, orient);
-
-		// 		runState = 1;
+			}
+			break;
 
 
-		// 	} else if (runState == 5) { 
-		// 		// Front alignment
-
-		// 	}
-
-		// 	break;
-
-
-		// 	} 
+		} 
 
 			
 
