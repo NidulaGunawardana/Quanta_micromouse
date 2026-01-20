@@ -28,7 +28,10 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "mainloop.h"
+#include "minimaze.h"
 #include <stdbool.h>
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -121,6 +124,15 @@ void Error_Handler(void);
 #define RPWMA_GPIO_Port GPIOB
 #define RPWMB_Pin GPIO_PIN_9
 #define RPWMB_GPIO_Port GPIOB
+
+#define TIM1_START HAL_TIM_Base_Start(&htim1)
+#define TIM1_STOP HAL_TIM_Base_Stop(&htim1)
+#define TIM6_IT_START HAL_TIM_Base_Start_IT(&htim6)
+#define TIM6_IT_STOP HAL_TIM_Base_Stop_IT(&htim6)
+#define TIM13_IT_START HAL_TIM_Base_Start_IT(&htim13)
+#define TIM13_IT_STOP HAL_TIM_Base_Stop_IT(&htim13)
+#define TIM14_IT_START HAL_TIM_Base_Start_IT(&htim14)
+#define TIM14_IT_STOP HAL_TIM_Base_Stop_IT(&htim14)
 
 /* USER CODE BEGIN Private defines */
 extern SPI_HandleTypeDef hspi1;

@@ -1,7 +1,7 @@
 Libs/Src/L3GD20.o: ../Libs/Src/L3GD20.c \
- C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/L3GD20.h \
- C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/led.h ../Core/Inc/main.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h \
+ ../Core/Inc/main.h ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
@@ -33,10 +33,23 @@ Libs/Src/L3GD20.o: ../Libs/Src/L3GD20.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/typedefs.h \
- C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/parameters_.h
-C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/L3GD20.h:
-C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/led.h:
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/mainloop.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/parameters_.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/adc.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/encoder.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/algorithm/lnc/minimaze.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -70,5 +83,18 @@ C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/led.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/typedefs.h:
-C:/Users/nadil/Desktop/Quanta_firmware/Libs/Inc/parameters_.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/mainloop.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/parameters_.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/adc.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/encoder.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/algorithm/lnc/minimaze.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h:

@@ -1,0 +1,136 @@
+/*
+ * mainloop.c
+ *
+ *  Created on: Sep 26, 2024
+ *      Author: nadil
+ */
+
+#include "mainloop.h"
+//int enc = 0;
+//bool buttonPress = false;
+uint32_t left_enc_val;
+uint32_t right_enc_val;
+int count = 0;
+
+double LF_s = 0;
+double RF_s = 0;
+double L_s = 0;
+double R_s = 0;
+
+void mainloop() {
+
+//	ALL_LED_ON
+//	;
+//	gyroInit();
+//	motorInit();
+//	gyroCalibration();
+//	ALL_LED_OFF
+//	;
+
+	initialization_block();
+
+//	l_speed = 0.2;
+//	r_speed = 0.2;
+//	while (1) {
+//		if (finishMove(FRONT_ALIGN, 30)) { // Put a pseudo number as the value
+//			STOP_ROBOT
+//			;
+////			break;
+//		}
+
+//		left_enc_val = l_position;
+//		right_enc_val = r_position;
+
+/////////////// Palm activated start ////////////////////////
+
+//		if (startRun()) {
+//			count = (count == 0) ? 1 : 0;
+//		}
+//		if (count == 1) {
+//			moveStraightForDistance(CELL_LENGTH);
+//			STOP_ROBOT
+//			;
+//			count = 0;
+//		}
+
+//	moveStraightForDistance(CELL_LENGTH);
+//	STOP_ROBOT;
+
+//	;
+
+//	alignAndMaintainDistance(45);
+//	STOP_ROBOT
+//	;
+//	alignAndMaintainDistance(45);
+//	STOP_ROBOT
+//	;
+//	LED5_ON;
+//	turnToAngleEncoder(90);
+//	STOP_ROBOT;
+
+	updateIRValues();
+//
+//		turnToAngle(90);
+//		STOP_ROBOT;
+
+//		gyroUpdate();
+//		LED4_ON;
+//		HAL_Delay(10);
+//		LED4_OFF;
+//		HAL_Delay(10);
+
+//	while (1) {
+//		updateIRValues();
+////		LF_s = read_DL_Sensor;
+////		RF_s = read_RF_Sensor;
+////		L_s = read_LF_Sensor;
+////		R_s = read_DR_Sensor;
+//
+//	}
+
+//		turnToAngle(-360);
+//		STOP_ROBOT;
+//		break;
+
+//		if (buttonPress) {
+//			LED3_ON;
+//			HAL_Delay(100);
+//			LED3_OFF;
+////			HAL_Delay(100);
+//
+//			if (finishMove(POINT_TURN, 90)) {
+//				STOP_ROBOT
+//				;
+//
+//				buttonPress=false;
+//				resetEncoder();
+//				break;
+//
+//			}
+//		}
+//	}
+}
+
+int initialization_block(void) {
+	ALL_LED_ON
+	;
+	TIM1_START; ////////////////// CRUCIAL PART DON"T OFFFFFFFFFFFFFFFF ///////////////////////////
+	TIM6_IT_START;
+
+	motorInit();
+	encoderInit();
+	gyroInit();
+//	displayInit();
+//	buzzerInit();
+
+	ALL_LED_OFF
+	;
+	HAL_Delay(1000);
+	gyroCalibration();
+//	disp_state = DEFAULT;
+	TIM13_IT_START;
+	// TIM14_IT_START;
+
+	return 0;
+}
+

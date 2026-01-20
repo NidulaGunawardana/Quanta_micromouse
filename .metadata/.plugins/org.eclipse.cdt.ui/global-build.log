@@ -1,0 +1,21 @@
+07:25:15 **** Incremental Build of configuration Debug for project Quanta_firmware ****
+make -j16 all 
+arm-none-eabi-g++ "../algorithm/Src/minimaze.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F405xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -I"D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc" -I"D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/algorithm/lnc" -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-use-cxa-atexit -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"algorithm/Src/minimaze.d" -MT"algorithm/Src/minimaze.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "algorithm/Src/minimaze.o"
+arm-none-eabi-g++ -o "Quanta_firmware.elf" @"objects.list"   -mcpu=cortex-m4 -T"D:\Micromouse\Firmware\Quanta_micromouse\Quanta_firmware\STM32F405RGTX_FLASH.ld" -Wl,-Map="Quanta_firmware.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: Quanta_firmware.elf
+ 
+arm-none-eabi-size  Quanta_firmware.elf 
+arm-none-eabi-objdump -h -S Quanta_firmware.elf  > "Quanta_firmware.list"
+   text	   data	    bss	    dec	    hex	filename
+ 224700	   3856	   9064	 237620	  3a034	Quanta_firmware.elf
+Finished building: default.size.stdout
+ 
+Finished building: Quanta_firmware.list
+ 
+07:25:31 **** Incremental Build of configuration Debug for project Quanta_firmware ****
+make -j16 all 
+arm-none-eabi-size  Quanta_firmware.elf 
+   text	   data	    bss	    dec	    hex	filename
+ 224700	   3856	   9064	 237620	  3a034	Quanta_firmware.elf
+Finished building: default.size.stdout
+ 

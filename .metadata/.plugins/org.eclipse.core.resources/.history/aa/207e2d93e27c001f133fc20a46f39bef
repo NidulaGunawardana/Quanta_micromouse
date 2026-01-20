@@ -1,0 +1,27 @@
+/*
+ * minimaze.h
+ *
+ *  Created on: Sep 27, 2024
+ *      Author: nidul
+ */
+
+#ifndef LNC_MINIMAZE_H_
+#define LNC_MINIMAZE_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "main.h"
+#include "encoder.h"
+#include "motor.h"
+#include "PD.h"
+#include "led.h"
+#include
+
+void mainLoopFlood();
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* LNC_MINIMAZE_H_ */

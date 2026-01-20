@@ -5,8 +5,8 @@
  *      Author: nadil
  */
 
-#ifndef PARAMETERS__H_
-#define PARAMETERS__H_
+#ifndef PARAMETERS_H
+#define PARAMETERS_H
 
 #define REFLECTION_RATE_ 1000
 #define LOW_BAT_TH_ 7.4
@@ -14,11 +14,17 @@
 // ENCODER.h
 #define LINEAR_SENSITIVITY 67.7
 #define TURN_SENSITIVITY 5
+#define WHEEL_DIAMETER 6.46 // In centimeters
+#define CPR 810 // Counts Per Revolution
+#define ROBOT_WIDTH 9
+
+#define M_PI 3.1416
+
 ///////////////////////////// MOTOR.H //////////////////////////////////////////
 #define SPEED_THRESHOLD_ 0.8
 
 /////////////////////////////////// L3GD20.h /////////////////////////////////////////
-#define GYRO_SENSITIVITY_ 0.071
+#define GYRO_SENSITIVITY_ 0.034
 #define NOISE_THRESHOLD_ .95
 
 //////////////////////////////////// DISPLAY.h ////////////////////////////////////////
@@ -27,4 +33,11 @@
 /////////////////////////////////Buzzer.h /////////////////////////////////
 #define BUZZ_LOUDNESS_ .2
 
-#endif /* PARAMETERS__H_ */
+/////////////////////////////Maze Params ///////////////////////////////////////
+#define CELL_LENGTH 19.2 // Length of a cell
+#define ROB_BACK_TO_M_AXIS 4.0 // Distance from the back of the robot to the axis of the wheels
+#define MID_TO_FRONTWALL 33.0 // Distance to the front wall when the robot is in the middle of the cell
+#define MID_IR 82.0
+#include "main.h"
+
+#endif /* PARAMETERS_H */

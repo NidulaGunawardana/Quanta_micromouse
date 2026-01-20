@@ -9,6 +9,7 @@
 #define TYPEDEFS_H_
 
 #include <stdint.h>
+#include "main.h"
 
 #define u32_max 4294967295
 

@@ -66,12 +66,12 @@ void gyroInit(void)
 
 int gyroUpdate(void)
 {
-	LED8_ON;
+//	LED8_ON;
 	angle_rate = (float)(readGyro() - offset) * GYRO_SENSITIVITY;
 	angle_rate = (fabs(angle_rate) < noise && fabs(angle_rate)<NOISE_THRESHOLD) ? 0 : angle_rate;
 	angle_z += ((angle_rate + last_angle_rate) * timeDifference) / (2.0f);
 	last_angle_rate = angle_rate;
-	LED8_OFF;
+//	LED8_OFF;
 	return 0;
 }
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ImportExportAction">
+		<item key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID" value="org.eclipse.ui.wizards.import.FileSystem"/>
+		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
+			<item value="org.eclipse.ui.Basic"/>
+			<item value="org.eclipse.cdt.ui.importWizardCategory"/>
+			<item value="org.eclipse.equinox.p2.category"/>
+			<item value="org.eclipse.debug.ui"/>
+			<item value="org.eclipse.team.ui.importWizards"/>
+		</list>
+	</section>
+	<section name="FileSystemImportWizard">
+		<item key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID" value="false"/>
+		<item key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID" value="false"/>
+		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="C:\Users\nidul\Downloads"/>
+			<item value="D:\Micromouse\Firmware"/>
+			<item value="D:\STM Projects\Robot Test code 1\Libs\Src"/>
+			<item value="D:\STM Projects\Robot Test code 1\Libs\Inc"/>
+			<item value="D:\STM Projects\Robot Test code 1\Drivers"/>
+			<item value="D:\STM Projects\Robot Test code 1\Drivers\SSD1306"/>
+		</list>
+	</section>
+	<section name="ZipFileImportWizard">
+	</section>
+	<section name="NewWizardAction">
+	</section>
+</section>

@@ -1,0 +1,20 @@
+2024-09-29 01:03:43,338 [INFO] WebApp:189 - Connection lost
+2024-09-29 01:03:43,635 [INFO] WebApp:186 - Connection restablished
+2024-09-29 03:37:55,381 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 03:37:55,381 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 03:37:55,382 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:06:38,633 [INFO] WebApp:189 - Connection lost
+2024-09-29 12:08:11,628 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:08:11,629 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:08:11,630 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:08:13,151 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:08:13,151 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:08:13,152 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:19:16,048 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:19:16,049 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:19:16,049 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:19:16,345 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:19:16,345 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 12:19:16,346 [ERROR] ConfigurationRetriever:142 - IOException on connection: sw-center.st.com
+2024-09-29 14:14:54,743 [INFO] WebApp:186 - Connection restablished
+2024-09-29 14:16:11,890 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
