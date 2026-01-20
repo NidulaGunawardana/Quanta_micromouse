@@ -114,8 +114,7 @@ void mainloop() {
 
 
 int initialization_block(void) {
-	ALL_LED_ON
-	;
+	ALL_LED_ON;
 	TIM1_START; ////////////////// CRUCIAL PART DON"T OFFFFFFFFFFFFFFFF ///////////////////////////
 	TIM6_IT_START;
 

@@ -33,6 +33,8 @@
 /////////////////////////////////Buzzer.h /////////////////////////////////
 #define BUZZ_LOUDNESS_ .2
 
+#include "main.h"
+
 /////////////////////////////Maze Params ///////////////////////////////////////
 #define CELL_LENGTH 19.2 // Length of a cell
 #define ROB_BACK_TO_M_AXIS 4.0 // Distance from the back of the robot to the axis of the wheels
