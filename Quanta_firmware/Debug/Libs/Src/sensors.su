@@ -1,0 +1,6 @@
+../Libs/Src/sensors.c:55:8:sensorLF	40	static
+../Libs/Src/sensors.c:73:8:sensorRF	40	static
+../Libs/Src/sensors.c:91:8:sensorL	40	static
+../Libs/Src/sensors.c:109:8:sensorR	40	static
+../Libs/Src/sensors.c:126:6:updateIRValues	8	static
+../Libs/Src/sensors.c:138:6:startRun	16	static

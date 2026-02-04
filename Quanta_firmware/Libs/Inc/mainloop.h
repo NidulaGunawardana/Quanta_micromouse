@@ -9,7 +9,23 @@
 #define INC_MAINLOOP_H_
 
 #include "main.h"
+#include "L3GD20.h"
+#include "motor.h"
+#include "led.h"
+#include "sensors.h"
+//#include "PD.h"
+#include <stdbool.h>
+#include "typedefs.h"
+#include "move.h"
 
+// INITIALIZATION OF THE MAIN LOOP
 void mainloop();
+
+// INITIALIZATION OF HARDWARE
+int initialization_block(void);
+
+// INTERRUPTS
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 
 #endif /* INC_MAINLOOP_H_ */

@@ -1,0 +1,6 @@
+../Libs/Src/sensors.c:55:8:sensorLF	3
+../Libs/Src/sensors.c:73:8:sensorRF	3
+../Libs/Src/sensors.c:91:8:sensorL	3
+../Libs/Src/sensors.c:109:8:sensorR	3
+../Libs/Src/sensors.c:126:6:updateIRValues	1
+../Libs/Src/sensors.c:138:6:startRun	2

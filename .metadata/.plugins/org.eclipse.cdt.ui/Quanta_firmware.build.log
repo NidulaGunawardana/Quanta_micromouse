@@ -1,0 +1,10 @@
+07:25:31 **** Incremental Build of configuration Debug for project Quanta_firmware ****
+make -j16 all 
+arm-none-eabi-size  Quanta_firmware.elf 
+   text	   data	    bss	    dec	    hex	filename
+ 224700	   3856	   9064	 237620	  3a034	Quanta_firmware.elf
+Finished building: default.size.stdout
+ 
+
+07:25:31 Build Finished. 0 errors, 0 warnings. (took 385ms)
+

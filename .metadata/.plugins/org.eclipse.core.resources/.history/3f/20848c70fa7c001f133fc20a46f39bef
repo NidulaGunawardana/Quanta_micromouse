@@ -1,0 +1,127 @@
+/*
+ * sensors.c
+ *
+ *  Created on: Sep 25, 2024
+ *      Author: nidul
+ */
+
+#include "sensors.h"
+#include "adc.h"
+#include "math.h"
+
+double klf; //value
+double avg_freq = 100.0;
+
+float disLF, disRF, disL, disR;
+
+double getFilteredValueLF(double measurement) {
+
+	double q = 0.125; //process noise covariance
+	double r = 32; //measurement noise covariance
+
+	double p = 1023; //estimation error covariance
+	double k = 0.1; //kalman gain
+	/* Updates and gets the current measurement value */
+	//prediction update
+	//omit x = x
+	p = p + q;
+
+	//measurement update
+	k = p / (p + r);
+	klf = klf + k * (measurement - klf);
+	p = (1 - k) * p;
+
+	return klf;
+}
+
+double sensorLF() {
+	double ls = 0;
+	for (int i = 0; i < avg_freq; ++i) {
+		ls = ls + read_DL_Sensor / 3000.0;
+	}
+	ls = ls / avg_freq;
+	double dis = getFilteredValue(
+			2092.2346 * pow(ls, 6) - 10206.8364 * pow(ls, 5)
+					+ 18218.5926 * pow(ls, 4) - 15914.2725 * pow(ls, 3)
+					+ 7465.9839 * pow(ls, 2) - 1937.35038 * ls + 281.63051);
+	if (dis > 150) {
+		dis = 150.0;
+	}
+	return dis;
+//	return read_DL_Sensor;
+
+}
+
+double sensorRF() {
+	double ls = 0;
+	for (int i = 0; i < avg_freq; ++i) {
+		ls = ls + read_RF_Sensor / 3000.0;
+	}
+	ls = ls / avg_freq;
+	double dis = getFilteredValue(
+			6465.21814 * pow(ls, 6) - 24851.217167 * pow(ls, 5)
+					+ 38375.525035 * pow(ls, 4) - 30832.85327 * pow(ls, 3)
+					+ 13906.438397 * pow(ls, 2) - 3523.186551 * ls + 469.37889);
+	if (dis > 150) {
+		dis = 150.0;
+	}
+	return dis;
+//	return read_RF_Sensor;
+
+}
+
+double sensorL() {
+	double ls = 0;
+	for (int i = 0; i < avg_freq; ++i) {
+		ls = ls + read_LF_Sensor / 3000.0;
+	}
+	ls = ls / avg_freq;
+	double dis = getFilteredValue(
+			-3553.45956 * pow(ls, 6) + 10064.21247 * pow(ls, 5)
+					- 10211.2347 * pow(ls, 4) + 3701.980838 * pow(ls, 3)
+					+ 657.108784 * pow(ls, 2) - 906.105498 * ls + 247.2310);
+
+	if (dis > 140) {
+		dis = 140.0;
+	}
+	return dis;
+//	return read_DL_Sensor;
+
+}
+
+double sensorR() {
+	double ls = 0;
+	for (int i = 0; i < avg_freq; ++i) {
+		ls = ls + read_DR_Sensor / 3000.0;
+	}
+	ls = ls / avg_freq;
+	double dis = getFilteredValue(
+			81.050862 * pow(ls, 4) - 601.041711 * pow(ls, 3)
+					+ 1028.267634 * pow(ls, 2) - 702.140417 * ls + 196.70917);
+
+	if (dis > 140) {
+		dis = 140.0;
+	}
+	return dis;
+//	return read_RF_Sensor;
+
+}
+
+void updateIRValues() {
+	disLF = (float) sensorLF();
+	disRF = (float) sensorRF();
+	disL = (float) sensorL();
+	disR = (float) sensorR();
+
+}
+
+bool startRun() {
+	double activation_threshold = 70.0;
+	if (sensorLF() < activation_threshold) {
+		HAL_Delay(2000);
+		return true;
+
+	}
+
+	return false;
+}

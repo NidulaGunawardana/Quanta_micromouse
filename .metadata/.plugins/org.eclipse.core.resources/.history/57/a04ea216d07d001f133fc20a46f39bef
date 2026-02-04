@@ -1,0 +1,526 @@
+/*
+ * move.c
+ *
+ *  Created on: Sep 27, 2024
+ *      Author: nadil
+ */
+
+#include "move.h"
+
+float tta_Kp = 0.6e-2, tta_Kd = 1e-4; // constants for turnToAngle PD Controller
+
+// Variables for turnToAngle
+float tta_previous_error = 0.0;
+float tta_current_angle = 0.0;
+float tta_current_error = 0.0;
+float tta_target_angle = 0.0;
+float tta_pd_output = 0.0;
+
+uint32_t tta_previous_time = 0;
+uint32_t tta_current_time = 0;
+
+float ms_Kp = 2.7e-2, ms_Kd = 1e-4;  // PD controller constants for moving straight
+
+// Variables
+float ms_previous_error = 0.0;
+float ms_current_error = 0.0;
+float ms_pd_output = 0.0;
+
+float ms_dis_error = 0;
+float ms_dis_Kp = 6e-2;
+
+float ms_base_speed = 0.3;  // Base speed for the robot
+
+
+float ms_ir = 0; // PD controller constants for wall aligning
+float ms_ir_kp = 0;//5e-4;
+float ms_ir_kd = 0;
+float msir_prev_error = 0;
+
+uint32_t msir_prev_time = 0;
+uint32_t msir_curr_time = 0;
+
+bool F,L,R;
+
+////////////////////////////// Variable definition for the front wall align function //////////////////////////////
+
+// Define constants for PD control
+float Kp_align = 1.8e-2; // Proportional gain for alignment
+float Kd_align = 0.8e-3; // Derivative gain for alignment
+
+float Kp_distance = 3e-2; // Proportional gain for distance
+float Kd_distance = 1e-3; // Derivative gain for distance
+
+float previous_error_align = 0;
+float previous_error_distance = 0;
+
+
+//void turnToAngle(float angle) {
+//	/* When the required angle is passed to the function the robot will turn at steps of 90 degrees
+//	 * Clockwise angle < 0, Anti-clockwise angle > 0*/
+//	angle_z = 0;
+//	int i = fabs(angle) / 90;
+//
+//	for (int j = 0; j < i; j++) {
+//
+//		tta_target_angle = angle / i;  // Set target angle
+//		tta_previous_error = 0;    // Initialize error
+//		tta_current_time = HAL_GetTick();
+//
+//		while (1) {
+//			// Update the gyro sensor or other sensor for current angle
+//			tta_current_angle = angle_z; // Assuming angle_z holds the current robot orientation
+//
+//			// Calculate the error (difference between target and current angle)
+//			tta_current_error = tta_target_angle - tta_current_angle;
+//
+//			// Calculate the time difference between loops
+//			tta_previous_time = tta_current_time;
+//			tta_current_time = HAL_GetTick();
+//			float delta_time = (tta_current_time - tta_previous_time) / 1000.0; // Convert to seconds
+//
+//			// PD controller formula
+//			float derivative = (tta_current_error - tta_previous_error)
+//					/ delta_time;
+//			tta_pd_output = (tta_Kp * tta_current_error)
+//					+ (tta_Kd * derivative);
+//
+//			// Set motor speeds based on PD output
+//			// Assuming positive tta_pd_output turns the robot one way, and negative turns it the other way
+//			tta_pd_output = (fabs(tta_pd_output) > 0.3) ? 0.3*(tta_pd_output/fabs(tta_pd_output)) : tta_pd_output;
+//			tta_pd_output = (fabs(tta_pd_output) < 0.1) ? 0.1*(tta_pd_output/fabs(tta_pd_output)) : tta_pd_output;
+//
+//			l_speed = -tta_pd_output;
+//			r_speed = +tta_pd_output;
+//
+//			// Update the previous error for the next loop
+//			tta_previous_error = tta_current_error;
+//
+//			// Apply motor speed to wheels
+//			setWheels();
+//
+//			// Break condition: stop turning when error is small enough
+//			if (fabs(tta_current_error) < 2) { // Threshold for stopping, you can tune this value
+//				l_speed = 0;
+//				r_speed = 0;
+//				setWheels();  // Stop the wheels
+//				angle_z = 0;
+//				break;  // Exit the loop
+//			}
+//
+//			// Delay to avoid overwhelming the processor
+//			HAL_Delay(10);
+//		}
+//
+//	}
+//}
+
+float etta_Kp = 6e-3, etta_Kd = 1e-4;
+
+void turnToAngle(float angle) {
+    /* Turns the robot based on encoder readings
+     * Clockwise angle < 0, Anti-clockwise angle > 0 */
+
+	angle = -angle;
+
+    // Constants
+    float WHEEL_CIRCUMFERENCE = M_PI * WHEEL_DIAMETER; // Calculate wheel circumference
+
+    // Calculate the distance each wheel should travel to achieve the desired rotation
+    float turn_distance = (M_PI * ROBOT_WIDTH) * (fabs(angle) / 360.0); // Distance each wheel needs to move
+
+    // Convert distance to encoder counts
+    float distance_per_count = WHEEL_CIRCUMFERENCE / CPR; // Distance per encoder count
+
+    // Calculate the required encoder count change for the turn
+    int target_encoder_counts = turn_distance / distance_per_count;
+
+    resetEncoder();
+
+    // Initialize encoder values
+    int l_start_position = l_position;
+    int r_start_position = r_position;
+
+    int l_target = l_start_position + (angle > 0 ? target_encoder_counts : -target_encoder_counts);
+    int r_target = r_start_position + (angle < 0 ? target_encoder_counts : -target_encoder_counts);
+
+    // PD control initialization
+    tta_previous_error = 0;
+    tta_current_time = HAL_GetTick();
+
+    while (1) {
+        // Update encoder readings
+        int l_current_position = l_position;
+        int r_current_position = r_position;
+
+        // Calculate the error for each wheel
+        int l_error = l_target - l_current_position;
+        int r_error = r_target - r_current_position;
+
+        // Calculate the time difference between loops
+        tta_previous_time = tta_current_time;
+        tta_current_time = HAL_GetTick();
+        float delta_time = (tta_current_time - tta_previous_time) / 1000.0; // Convert to seconds
+
+        // PD controller for left and right wheels
+        float l_derivative = (l_error - tta_previous_error) / delta_time;
+        float r_derivative = (r_error - tta_previous_error) / delta_time;
+
+        float l_pd_output = (etta_Kp * l_error) + (etta_Kd * l_derivative);
+        float r_pd_output = (etta_Kp * r_error) + (etta_Kd * r_derivative);
+
+        // Limit the motor output to avoid overpowering
+        l_pd_output = (fabs(l_pd_output) > 0.3) ? 0.3 * (l_pd_output / fabs(l_pd_output)) : l_pd_output;
+        l_pd_output = (fabs(l_pd_output) < 0.1) ? 0.1 * (l_pd_output / fabs(l_pd_output)) : l_pd_output;
+
+        r_pd_output = (fabs(r_pd_output) > 0.3) ? 0.3 * (r_pd_output / fabs(r_pd_output)) : r_pd_output;
+        r_pd_output = (fabs(r_pd_output) < 0.1) ? 0.1 * (r_pd_output / fabs(r_pd_output)) : r_pd_output;
+
+        // Set motor speeds based on PD output
+        l_speed = l_pd_output;
+        r_speed = r_pd_output;
+
+        // Apply motor speed to wheels
+        setWheels();
+
+        // Break condition: stop turning when both wheels reach their target
+        if (fabs(l_error) < 5 && fabs(r_error) < 5) { // Threshold for stopping
+            l_speed = 0;
+            r_speed = 0;
+            setWheels();  // Stop the wheels
+            break;  // Exit the loop
+        }
+
+        // Delay to avoid overwhelming the processor
+        HAL_Delay(10);
+
+        // Update previous error
+        tta_previous_error = (l_error + r_error) / 2;
+    }
+}
+
+// Function to calculate distance from encoder counts
+float calculateDistance(uint32_t encoder_count) {
+    float wheel_circumference = WHEEL_DIAMETER * 3.1416;  // Circumference of the wheel
+    float revolutions = (float)encoder_count / CPR;  // Number of wheel revolutions
+    return revolutions * wheel_circumference;  // Distance moved in meters
+}
+
+// Function to move straight for a specified distance using PD controller
+void moveStraightForDistance(float target_distance) {
+//	/Except for the first time target distance is given as the distance of one cell which is 19.2cm/
+
+	float L1,L2,L3,R1,R2,R3,LT,RT;
+
+	float accelfact = 6e-2;
+	float highthresh = 0.13;
+
+	int wall_cap = 0;
+
+	ms_previous_error = 0;  // Reset error
+	resetEncoder();  // Reset encoder values to start fresh
+
+	float ms_initial_angle = angle_z; // Assuming angle_z holds the initial robot orientation
+
+	uint32_t l_encoder_start = l_position;
+	uint32_t r_encoder_start = r_position;
+
+	uint32_t del_ir_time;
+
+	// Continue moving until the robot has traveled the target distance
+
+	msir_curr_time = HAL_GetTick();
+	msir_prev_time = msir_curr_time;
+
+	while (1) {
+
+		msir_curr_time = HAL_GetTick();
+
+		del_ir_time = (msir_curr_time - msir_prev_time)/1000;
+
+		// Read current encoder positions
+		uint32_t l_encoder_count = l_position;
+		uint32_t r_encoder_count = r_position;
+
+		// Calculate the average distance traveled by both wheels
+		float l_distance = calculateDistance(l_encoder_count - l_encoder_start);
+		float r_distance = calculateDistance(r_encoder_count - r_encoder_start);
+		float avg_distance = (l_distance + r_distance) / 2.0;
+
+		if (avg_distance >= 9.6 && wall_cap == 2) { // Wall capture when half cell distance is travelled
+			updateIRValues();
+
+			L1 = disL;
+			R1 = disR;
+
+			LT = (L1 + L2 + L3)/3.0;
+			RT = (R1 + R2 + R3)/3.0;
+
+			L = (LT < 125) ? 1 : 0;
+			R = (RT < 125) ? 1 : 0;
+
+			if (L) {
+				LED3_ON;
+			} else {
+				LED3_OFF;
+			}
+
+			if (R) {
+				LED9_ON;
+			} else {
+				LED9_OFF;
+			}
+
+			wall_cap += 1;
+//			STOP_ROBOT;
+//			HAL_Delay(2000);
+
+
+		}
+		else if (avg_distance >= 9 && wall_cap == 1) {
+			updateIRValues();
+			L2 = disL;
+			R2 = disR;
+//			STOP_ROBOT;
+//			HAL_Delay(2000);
+
+
+			wall_cap += 1;
+		}
+		else if (avg_distance >= 8.4 && wall_cap == 0) {
+			updateIRValues();
+			L3 = disL;
+			R3 = disR;
+
+
+			wall_cap += 1;
+
+		}
+
+		ms_dis_error = target_distance - avg_distance;
+
+		float ms_speed = ms_dis_Kp * ms_dis_error;
+
+		ms_speed = (ms_speed > 0.3) ? 0.3 : ms_speed;
+		ms_speed = (ms_speed < 0.1) ? 0.1 : ms_speed;
+
+		// Stop if the target distance is reached
+		if (avg_distance >= target_distance - 2) {
+			updateIRValues();
+			F = ((disLF + disRF)/2<80) ? 1:0;
+
+			if(F){
+				LED6_ON;
+				STOP_ROBOT;
+				alignAndMaintainDistance(MID_TO_FRONTWALL);
+				STOP_ROBOT;
+			}else{
+				LED6_OFF;
+			}
+			break;
+		}
+
+		// Update current robot orientation using gyro
+		float ms_current_angle = angle_z;  // Read current orientation
+
+		// Calculate the error: difference between the current angle and the initial angle
+		ms_current_error = ms_initial_angle - ms_current_angle;
+
+		// Calculate PD output
+		float ms_derivative = ms_current_error - ms_previous_error;
+		ms_pd_output = (ms_Kp * ms_current_error) + (ms_Kd * ms_derivative);
+
+		/////////////////////////////////////// IR PD correction //////////////////////////////////////////
+		float ir_error;
+		updateIRValues();
+		if (mstwoWalls())
+			ir_error = disL - disR;
+		else if (msleftWall())
+			ir_error = 2 * (disL - MID_IR);
+		else if (msrightWall())
+			ir_error = 2 * (MID_IR - disR);
+		else {
+			ir_error = 0;
+		}
+
+		ms_ir = ms_ir_kp * ir_error + (ir_error - msir_prev_error)*ms_ir_kd/del_ir_time;
+
+		// Adjust motor speeds based on PD output to correct heading
+		// Base speed for both wheels, corrected by the PD controller
+
+//		ms_pd_output =
+//				(fabs(ms_pd_output) > 0.15) ?
+//						0.15 * (ms_pd_output / fabs(ms_pd_output)) :
+//						ms_pd_output;
+
+		ms_ir = (fabs(ms_ir) > 0.4) ? 0.4 * (ms_ir / fabs(ms_ir)) : ms_ir;
+
+
+		l_speed = ms_speed - ms_pd_output;
+		r_speed = ms_speed + ms_pd_output;
+
+		highthresh += accelfact;
+
+		highthresh = (highthresh > 0.3) ? 0.3 : highthresh;
+
+		l_speed =
+				(fabs(l_speed) > highthresh) ?
+						highthresh * (l_speed / fabs(l_speed)) : l_speed;
+
+		l_speed =
+				(fabs(l_speed) < 0.1) ?
+						0.1 * (l_speed / fabs(l_speed)) : l_speed;
+
+		r_speed =
+				(fabs(r_speed) > highthresh) ?
+						highthresh * (r_speed / fabs(r_speed)) : r_speed;
+
+		r_speed =
+				(fabs(r_speed) < 0.1) ?
+						0.1 * (r_speed / fabs(r_speed)) : r_speed;
+
+		// Apply motor speed to wheels
+		setWheels();
+
+		// Update previous error for next iteration
+		ms_previous_error = ms_current_error;
+		msir_prev_error = ir_error;
+		// Delay to control loop execution rate (e.g., 10 ms per loop)
+		HAL_Delay(10);
+	}
+
+	// Stop the robot after reaching the target distance
+	l_speed = 0;
+	r_speed = 0;
+	setWheels();  // Stop the motors
+
+	// Reset the encoders after the move is done
+	resetEncoder();
+}
+
+void moveFirst_cell() {
+	updateIRValues();
+
+	L = (disL < 120) ? 1 : 0;
+	R = (disR < 120) ? 1 : 0;
+
+	if (L) {
+		LED3_ON;
+	} else {
+		LED3_OFF;
+	}
+
+	if (R) {
+		LED9_ON;
+	} else {
+		LED9_OFF;
+	}
+
+	moveStraightForDistance(9.0 - ROB_BACK_TO_M_AXIS);
+
+	updateIRValues();
+
+	F = (((disLF + disRF) / 2 )< 80) ? 1 : 0;
+
+	if (F) {
+		LED6_ON;
+	} else {
+		LED6_OFF;
+	}
+}
+
+// Function to control the robot's alignment and distance
+void alignAndMaintainDistance(float targetDistance) {
+
+	uint32_t aamd_current_time = HAL_GetTick();
+	uint32_t aamd_prev_time;
+
+	aamd_prev_time = aamd_current_time;
+
+	while (1) {
+
+		if ((HAL_GetTick() - aamd_current_time) > 2000){
+			STOP_ROBOT;
+			break;
+		}
+
+		updateIRValues(); // Update sensor readings
+
+		aamd_current_time = HAL_GetTick();
+
+		// Read sensor values (distance from left and right side walls)
+		float disLeft = disLF;
+		float disRight = disRF + 2;
+
+		// Alignment PD controller: Align robot by minimizing the difference between left and right distances
+		float error_align = disLeft - disRight;
+		float derivative_align = ((error_align - previous_error_align)*1000)/(aamd_current_time - aamd_prev_time);
+		float control_signal_align = Kp_align * error_align
+				+ Kd_align * derivative_align;
+
+		// Store the error for the next cycle
+		previous_error_align = error_align;
+
+		// Distance PD controller: Keep the robot at the target distance from the wall
+		float averageDistance = (disLeft + disRight) / 2;
+		float error_distance = targetDistance - averageDistance;
+		float derivative_distance = ((error_distance - previous_error_distance)*1000)/(aamd_current_time - aamd_prev_time);
+		float control_signal_distance = Kp_distance * error_distance
+				+ Kd_distance * derivative_distance;
+
+		// Store the error for the next cycle
+		previous_error_distance = error_distance;
+
+		if (fabs(error_align) <= 0.5 && fabs(error_distance) <= 0.5){
+			STOP_ROBOT;
+			break;
+		}
+
+		// Combine control signals for motors
+		// Assuming motor functions setLeftMotor() and setRightMotor() exist
+		l_speed = control_signal_align - control_signal_distance;
+		r_speed = -control_signal_align - control_signal_distance;
+
+		l_speed =
+				(fabs(l_speed) > 0.3) ?
+						0.3 * (l_speed / fabs(l_speed)) : l_speed;
+//		l_speed =
+//				(fabs(l_speed) < 0.1) ?
+//						0.1 * (l_speed / fabs(l_speed)) : l_speed;
+		r_speed =
+				(fabs(r_speed) > 0.3) ?
+						0.3 * (r_speed / fabs(r_speed)) : r_speed;
+//		r_speed =
+//				(fabs(r_speed) < 0.1) ?
+//						0.1 * (r_speed / fabs(r_speed)) : r_speed;
+
+		aamd_prev_time = aamd_current_time;
+
+		setWheels();
+	}
+
+}
+
+int mstwoWalls() {
+    if ((disL - 120) < 0 && (disR - 120) < 0) {
+        return 1;  // Use 'true' for boolean return values
+    } else {
+        return 0; // Use 'false' for boolean return values
+    }
+}
+
+int msleftWall() {
+	if ((disL - 120) < 0) {
+		return 1;  // Use 'true' for boolean return values
+	} else {
+		return 0; // Use 'false' for boolean return values
+	}
+}
+
+int msrightWall() {
+	if ((disR - 120) < 0) {
+		return 1;  // Use 'true' for boolean return values
+	} else {
+		return 0; // Use 'false' for boolean return values
+	}
+}

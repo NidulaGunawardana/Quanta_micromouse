@@ -30,7 +30,24 @@ Core/Src/stm32f4xx_hal_msp.o: ../Core/Src/stm32f4xx_hal_msp.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/mainloop.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/parameters_.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/adc.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/encoder.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/algorithm/lnc/minimaze.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h \
+ D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -64,3 +81,20 @@ Core/Src/stm32f4xx_hal_msp.o: ../Core/Src/stm32f4xx_hal_msp.c \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/mainloop.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/parameters_.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/adc.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/typedefs.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/encoder.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/algorithm/lnc/minimaze.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/L3GD20.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/motor.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/led.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/sensors.h:
+D:/Micromouse/Firmware/Quanta_micromouse/Quanta_firmware/Libs/Inc/move.h:

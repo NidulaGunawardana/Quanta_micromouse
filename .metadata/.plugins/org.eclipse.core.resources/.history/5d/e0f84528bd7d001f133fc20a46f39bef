@@ -1,0 +1,104 @@
+/*
+ * led.c
+ *
+ *  Created on: Sep 26, 2024
+ *      Author: nidul
+ */
+
+#include "led.h"
+
+void startSeq() {
+	int speed = 90;
+
+	LED1_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED2_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED3_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED4_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED5_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED6_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED7_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED8_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED9_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED10_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED11_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+
+	HAL_Delay(500);
+
+	LED11_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED10_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED9_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED8_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED7_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED6_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED5_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED4_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED3_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED2_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+	LED1_ON;
+	HAL_Delay(speed);
+	ALL_LED_OFF
+	;
+}

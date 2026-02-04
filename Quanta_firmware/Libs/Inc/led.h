@@ -87,4 +87,6 @@ LED 11: GYRO CALIB
 #define LED11_TOG HAL_GPIO_TogglePin(LED11_GPIO_Port,LED11_Pin)
 
 
+void centerLED();
+
 #endif /* LED_H_ */

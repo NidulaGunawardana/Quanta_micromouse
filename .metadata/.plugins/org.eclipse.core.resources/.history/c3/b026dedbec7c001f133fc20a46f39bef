@@ -1,0 +1,32 @@
+/*
+ * sensors.h
+ *
+ *  Created on: Sep 25, 2024
+ *      Author: nidul
+ */
+
+#ifndef INC_SENSORS_H_
+#define INC_SENSORS_H_
+
+#include "main.h"
+#include "adc.h"
+#include "math.h"
+
+#define read_LF_distance sensorLF()
+#define read_RF_distance sensorRF()
+#define read_R_distance sensorR()
+#define read_L_distance sensorL()
+
+double sensorLF();
+double sensorRF();
+double sensorL();
+double sensorR();
+
+void updateIRValues();
+
+extern float disLF;
+extern float disRF;
+extern float disL;
+extern float disR;
+
+#endif /* INC_SENSORS_H_ */
